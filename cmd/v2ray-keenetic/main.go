@@ -1,18 +1,29 @@
 package main
 
 import (
+	"log"
+	"net/http"
 	"v2ray-keenetic/internal/handler"
 	"v2ray-keenetic/internal/service"
+	"v2ray-keenetic/internal/store"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	// Initialize database
+	// The database file will be created in the same directory where the app is run.
+	db, err := store.New("v2ray-keenetic.db")
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %v", err)
+	}
+	defer db.Close()
+
 	// Initialize services
 	v2rayService := service.NewV2RayService()
 
-	// Initialize handlers
-	apiHandler := handler.NewHandler(v2rayService)
+	// Initialize handlers, passing the database store
+	apiHandler := handler.NewHandler(v2rayService, db)
 
 	// Setup router
 	r := gin.Default()
@@ -20,9 +31,30 @@ func main() {
 	// API routes
 	api := r.Group("/api")
 	{
-		api.GET("/servers", apiHandler.GetServers)
-		api.POST("/servers", apiHandler.AddServer)
+		// Server CRUD routes
+		serverAPI := api.Group("/servers")
+		{
+			serverAPI.GET("", apiHandler.GetServers)
+			serverAPI.POST("", apiHandler.AddServer)
+			serverAPI.PUT("/:id", apiHandler.UpdateServer)
+			serverAPI.DELETE("/:id", apiHandler.DeleteServer)
+		}
+
+		// Service control routes
+		serviceAPI := api.Group("/service")
+		{
+			serviceAPI.POST("/start", apiHandler.StartService)
+			serviceAPI.POST("/stop", apiHandler.StopService)
+			serviceAPI.GET("/status", apiHandler.GetServiceStatus)
+		}
 	}
+
+	// Serve frontend static files
+	r.Static("/ui", "./web/dist")
+	// Redirect root to the UI
+	r.GET("/", func(c *gin.Context) {
+		c.Redirect(http.StatusMovedPermanently, "/ui")
+	})
 
 	// Simple ping route for health check
 	r.GET("/ping", func(c *gin.Context) {
@@ -32,5 +64,8 @@ func main() {
 	})
 
 	// Start the server
-	r.Run(":8080")
+	log.Println("Starting server on :8080")
+	if err := r.Run(":8080"); err != nil {
+		log.Fatalf("Failed to start server: %v", err)
+	}
 }
