@@ -9,7 +9,7 @@ import (
 	"os/exec"
 	"sync"
 	"syscall"
-	"v2ray-keenetic/internal/model"
+	"github.com/halibiram/keenetiray/internal/model"
 )
 
 // V2RayService defines the interface for managing the V2Ray process.

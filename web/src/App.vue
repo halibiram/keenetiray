@@ -1,10 +1,26 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 
-const servers = ref([])
+interface Server {
+  id: string;
+  name: string;
+  protocol: 'vmess' | 'vless' | 'shadowsocks' | 'trojan';
+  address: string;
+  port: number;
+  userID: string;
+  alterID: number;
+  security: string;
+  network: 'tcp' | 'ws' | 'grpc';
+  wsPath: string;
+  grpcSvcName: string;
+  tls: string;
+  sni: string;
+}
+
+const servers = ref<Server[]>([])
 const serviceStatus = ref('Not Running')
 
-const newServer = ref({
+const newServer = ref<Omit<Server, 'id'>>({
   name: '',
   protocol: 'vmess',
   address: '',
@@ -19,7 +35,7 @@ const newServer = ref({
   sni: ''
 })
 
-async function apiCall(url, options) {
+async function apiCall(url: string, options?: RequestInit) {
   try {
     const response = await fetch(url, options)
     if (!response.ok) {
@@ -29,7 +45,11 @@ async function apiCall(url, options) {
     return response
   } catch (error) {
     console.error('API call failed:', error)
-    alert(`Error: ${error.message}`)
+    if (error instanceof Error) {
+      alert(`Error: ${error.message}`)
+    } else {
+      alert('An unknown error occurred')
+    }
     throw error
   }
 }
@@ -46,7 +66,7 @@ async function fetchStatus() {
 }
 
 async function addServer() {
-  const serverData = { ...newServer.value, port: parseInt(newServer.value.port) }
+  const serverData = { ...newServer.value }
   await apiCall('/api/servers', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -55,13 +75,13 @@ async function addServer() {
   fetchServers()
 }
 
-async function deleteServer(id) {
+async function deleteServer(id: string) {
   if (!confirm('Are you sure you want to delete this server?')) return
   await apiCall(`/api/servers/${id}`, { method: 'DELETE' })
   fetchServers()
 }
 
-async function startService(id) {
+async function startService(id: string) {
   await apiCall('/api/service/start', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -116,7 +136,7 @@ onMounted(() => {
         <form @submit.prevent="addServer">
           <input type="text" v-model="newServer.name" placeholder="Name" required>
           <input type="text" v-model="newServer.address" placeholder="Address (e.g., domain.com)" required>
-          <input type="number" v-model="newServer.port" placeholder="Port" required>
+          <input type="number" v-model.number="newServer.port" placeholder="Port" required>
           <input type="text" v-model="newServer.userID" placeholder="User ID (UUID)" required>
 
           <select v-model="newServer.protocol">

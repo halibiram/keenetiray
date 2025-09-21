@@ -8,47 +8,67 @@
 
 This project is a V2Ray proxy application designed specifically for Keenetic routers. It provides a web-based management interface to control the V2Ray service on the router.
 
-### Features (Planned)
+## ✨ Features
 
-*   **Web UI**: A responsive web interface to manage V2Ray server configurations.
-*   **V2Ray Core Integration**: Manages the V2Ray-core process for traffic routing.
-*   **System Integration**: Integrates with Keenetic RouterOS for startup and network management.
-*   **Multiple Protocol Support**: Supports VMess, VLESS, Shadowsocks, etc.
+- 🌐 **Web Management Interface**: Intuitive Vue.js-based control panel
+- 🔄 **Multiple Protocols**: VMess, VLESS, Shadowsocks, Trojan support
+- 📱 **QR Code Import**: Easy server configuration via QR codes
+- 📊 **Real-time Monitoring**: Connection status and traffic statistics
+- 🔒 **Secure**: HTTPS support and authentication
+- 🌍 **Multi-language**: English and Turkish support
+- 📱 **Mobile Friendly**: Responsive design for all devices
+- 🚀 **Auto Updates**: Automatic configuration updates
+- ⚖️ **Load Balancing**: Multiple server support with failover
 
-### Installation on Keenetic
+## 📋 Prerequisites
 
-**Prerequisites:**
-*   You must have shell access to your Keenetic router (e.g., via SSH).
-*   You need the `v2ray-core` binary installed on your router and available in the system's `PATH`. This application is a *controller* for `v2ray-core`; it does not include it.
+- Keenetic router with shell access (SSH/Telnet)
+- v2ray-core binary installed and accessible in PATH
+- At least 32MB free storage space
+- Internet connection for initial setup
 
-**Steps:**
-1.  **Download on Router**: Connect to your router via SSH. Find the package URL for your router's architecture from the project's [GitHub Releases](https://github.com/your-username/v2ray-keenetic/releases) page. Use `wget` to download it to the `/tmp` directory.
-    ```bash
-    # This URL is an EXAMPLE for the ARM architecture.
-    # Replace it with the actual URL from the GitHub Releases page.
-    wget https://github.com/your-username/v2ray-keenetic/releases/download/v1.0.0/v2ray-keenetic_linux_arm.tar.gz -O /tmp/v2ray-keenetic.tar.gz
-    ```
+## 🔧 Supported Router Models
 
-2.  **Install on Router**: Perform the following steps:
-    *   Navigate to a persistent directory. The user data partition is a good choice (`/opt` is common).
-        ```bash
-        mkdir -p /opt/v2ray-keenetic
-        cd /opt/v2ray-keenetic
-        ```
-    *   Extract the archive:
-        ```bash
-        tar -xzf /tmp/v2ray-keenetic.tar.gz -C .
-        ```
-    *   Make the binary executable:
-        ```bash
-        chmod +x ./v2ray-keenetic
-        ```
+- Keenetic Giga (KN-1010/1011)
+- Keenetic Ultra (KN-1810)
+- Keenetic Titan (KN-1820)
+- Keenetic Hero 4G (KN-2310)
+- And other NDMS-based models
 
-3.  **Run the Application**: You can now run the application:
-    ```bash
-    ./v2ray-keenetic
-    ```
-    The application will start, and the web interface will be available at `http://<your-router-ip>:8080`.
+## 🚦 Quick Start
+
+### 1. Check Prerequisites
+```bash
+# Verify v2ray-core installation
+v2ray --version
+
+# Check available space
+df -h
+```
+
+### 2. Download and Install
+```bash
+# Download for your architecture (replace with actual version)
+wget https://github.com/halibiram/keenetiray/releases/latest/download/keenetiray_linux_arm.tar.gz -O /tmp/keenetiray.tar.gz
+
+# Create installation directory
+mkdir -p /opt/keenetiray
+cd /opt/keenetiray
+
+# Extract and set permissions
+tar -xzf /tmp/keenetiray.tar.gz
+chmod +x keenetiray
+
+# Run the application
+./keenetiray
+```
+
+### 3. Access Web Interface
+Open your browser and navigate to: `http://[ROUTER_IP]:8888`
+
+Default credentials:
+- Username: `admin`
+- Password: `admin123` (change immediately!)
 
 ### Project Structure
 *   `/cmd/v2ray-keenetic`: The Go backend application (API server).
@@ -78,47 +98,67 @@ npm run dev
 
 Bu proje, Keenetic router'lar için özel olarak tasarlanmış bir V2Ray proxy uygulamasıdır. Router üzerindeki V2Ray servisini kontrol etmek için web tabanlı bir yönetim arayüzü sağlar.
 
-### Özellikler (Planlanan)
+## ✨ Özellikler
 
-*   **Web Arayüzü**: V2Ray sunucu yapılandırmalarını yönetmek için duyarlı bir web arayüzü.
-*   **V2Ray Çekirdek Entegrasyonu**: Trafik yönlendirme için V2Ray-core sürecini yönetir.
-*   **Sistem Entegrasyonu**: Başlangıç ve ağ yönetimi için Keenetic RouterOS ile entegre olur.
-*   **Çoklu Protokol Desteği**: VMess, VLESS, Shadowsocks vb. destekler.
+- 🌐 **Web Yönetim Arayüzü**: Sezgisel Vue.js tabanlı kontrol paneli
+- 🔄 **Çoklu Protokol Desteği**: VMess, VLESS, Shadowsocks, Trojan desteği
+- 📱 **QR Kod ile İçe Aktarma**: QR kodları aracılığıyla kolay sunucu yapılandırması
+- 📊 **Gerçek Zamanlı İzleme**: Bağlantı durumu ve trafik istatistikleri
+- 🔒 **Güvenli**: HTTPS desteği ve kimlik doğrulama
+- 🌍 **Çoklu Dil Desteği**: İngilizce ve Türkçe desteği
+- 📱 **Mobil Uyumlu**: Tüm cihazlar için duyarlı tasarım
+- 🚀 **Otomatik Güncellemeler**: Otomatik yapılandırma güncellemeleri
+- ⚖️ **Yük Dengeleme**: Yedekleme ile çoklu sunucu desteği
 
-### Keenetic Cihazına Kurulum
+## 📋 Ön Gereksinimler
 
-**Ön Gereksinimler:**
-*   Keenetic router'ınıza shell erişiminiz (örneğin, SSH ile) olmalıdır.
-*   Router'ınızda `v2ray-core` binary'sinin kurulu ve sistem `PATH`'inde erişilebilir olması gerekmektedir. Bu uygulama, `v2ray-core` için bir *kontrolcüdür*; onu içermez.
+- Kabuk erişimi (SSH/Telnet) olan Keenetic router
+- PATH içinde erişilebilir ve kurulu v2ray-core binary'si
+- En az 32MB boş depolama alanı
+- İlk kurulum için internet bağlantısı
 
-**Adımlar:**
-1.  **Router'a İndirme**: Router'ınıza SSH ile bağlanın. Projenin [GitHub Releases](https://github.com/your-username/v2ray-keenetic/releases) sayfasından router'ınızın mimarisine uygun paket URL'sini bulun. `wget` kullanarak paketi `/tmp` dizinine indirin.
-    ```bash
-    # Bu URL, ARM mimarisi için bir ÖRNEKTİR.
-    # Onu GitHub Releases sayfasındaki gerçek URL ile değiştirin.
-    wget https://github.com/your-username/v2ray-keenetic/releases/download/v1.0.0/v2ray-keenetic_linux_arm.tar.gz -O /tmp/v2ray-keenetic.tar.gz
-    ```
+## 🔧 Desteklenen Router Modelleri
 
-2.  **Router'da Kurulum**: Aşağıdaki adımları izleyin:
-    *   Kalıcı bir dizine gidin. Kullanıcı veri bölümü (`/opt` yaygındır) iyi bir seçimdir.
-        ```bash
-        mkdir -p /opt/v2ray-keenetic
-        cd /opt/v2ray-keenetic
-        ```
-    *   Arşivi çıkartın:
-        ```bash
-        tar -xzf /tmp/v2ray-keenetic.tar.gz -C .
-        ```
-    *   Binary'yi çalıştırılabilir yapın:
-        ```bash
-        chmod +x ./v2ray-keenetic
-        ```
+- Keenetic Giga (KN-1010/1011)
+- Keenetic Ultra (KN-1810)
+- Keenetic Titan (KN-1820)
+- Keenetic Hero 4G (KN-2310)
+- Ve diğer NDMS tabanlı modeller
 
-3.  **Uygulamayı Çalıştırma**: Artık uygulamayı çalıştırabilirsiniz:
-    ```bash
-    ./v2ray-keenetic
-    ```
-    Uygulama başlayacak ve web arayüzü `http://<router-ip-adresiniz>:8080` adresinde erişilebilir olacaktır.
+## 🚦 Hızlı Başlangıç
+
+### 1. Ön Gereksinimleri Kontrol Edin
+```bash
+# v2ray-core kurulumunu doğrulayın
+v2ray --version
+
+# Kullanılabilir alanı kontrol edin
+df -h
+```
+
+### 2. İndirin ve Kurun
+```bash
+# Mimarınıza uygun sürümü indirin (gerçek sürümle değiştirin)
+wget https://github.com/halibiram/keenetiray/releases/latest/download/keenetiray_linux_arm.tar.gz -O /tmp/keenetiray.tar.gz
+
+# Kurulum dizinini oluşturun
+mkdir -p /opt/keenetiray
+cd /opt/keenetiray
+
+# Arşivi çıkartın ve izinleri ayarlayın
+tar -xzf /tmp/keenetiray.tar.gz
+chmod +x keenetiray
+
+# Uygulamayı çalıştırın
+./keenetiray
+```
+
+### 3. Web Arayüzüne Erişin
+Tarayıcınızı açın ve şu adrese gidin: `http://[ROUTER_IP]:8888`
+
+Varsayılan kimlik bilgileri:
+- Kullanıcı adı: `admin`
+- Şifre: `admin123` (hemen değiştirin!)
 
 ### Proje Yapısı
 *   `/cmd/v2ray-keenetic`: Go ile yazılmış arka uç uygulaması (API sunucusu).
