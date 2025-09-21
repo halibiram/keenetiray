@@ -15,18 +15,44 @@ This project is a V2Ray proxy application designed specifically for Keenetic rou
 *   **System Integration**: Integrates with Keenetic RouterOS for startup and network management.
 *   **Multiple Protocol Support**: Supports VMess, VLESS, Shadowsocks, etc.
 
-### Installation on Keenetic (Planned)
+### Installation on Keenetic
 
-**CAUTION:** This project is still under development and is not ready for direct installation on Keenetic devices. The following steps outline the target installation process for a future release.
+**Prerequisites:**
+*   You must have shell access to your Keenetic router (e.g., via SSH).
+*   You need the `v2ray-core` binary installed on your router and available in the system's `PATH`. This application is a *controller* for `v2ray-core`; it does not include it.
 
-1.  **Download Package**: Download the `.opkg` or `.tar.gz` package appropriate for your Keenetic device's architecture (ARM/MIPS) from the project's `Releases` page.
-2.  **Upload to Device**: Upload the downloaded package to the `/tmp` or `/opt` directory on the device using `scp` or the file manager in the Keenetic web interface.
-3.  **Install via SSH**: Connect to your Keenetic device via SSH and run the following commands:
+**Steps:**
+1.  **Build the Package**: Build the application for your router's architecture (e.g., `arm` or `mips`) by running the build script from your development machine:
     ```bash
-    # Example for an opkg package:
-    opkg install /tmp/v2ray-keenetic-*.opkg
+    ./scripts/build.sh arm
     ```
-4.  **Configure via Web UI**: After installation is complete, you can find the V2Ray Control Panel under the "Applications" menu or a similar section in the Keenetic web interface (usually at `192.168.1.1`). You can configure your V2Ray server settings from there.
+    This will create a file named `dist/v2ray-keenetic_linux_arm.tar.gz`.
+
+2.  **Upload to Router**: Copy the generated `.tar.gz` archive to your router's temporary directory (e.g., `/tmp`). You can use `scp`:
+    ```bash
+    scp dist/v2ray-keenetic_linux_arm.tar.gz root@192.168.1.1:/tmp/
+    ```
+
+3.  **Install on Router**: Connect to your router via SSH and perform the following steps:
+    *   Navigate to a persistent directory. The user data partition is a good choice (`/opt` is common).
+        ```bash
+        mkdir -p /opt/v2ray-keenetic
+        cd /opt/v2ray-keenetic
+        ```
+    *   Extract the archive:
+        ```bash
+        tar -xzf /tmp/v2ray-keenetic_linux_arm.tar.gz -C .
+        ```
+    *   Make the binary executable:
+        ```bash
+        chmod +x ./v2ray-keenetic
+        ```
+
+4.  **Run the Application**: You can now run the application:
+    ```bash
+    ./v2ray-keenetic
+    ```
+    The application will start, and the web interface will be available at `http://<your-router-ip>:8080`.
 
 ### Project Structure
 
@@ -73,18 +99,44 @@ Bu proje, Keenetic router'lar için özel olarak tasarlanmış bir V2Ray proxy u
 *   **Sistem Entegrasyonu**: Başlangıç ve ağ yönetimi için Keenetic RouterOS ile entegre olur.
 *   **Çoklu Protokol Desteği**: VMess, VLESS, Shadowsocks vb. destekler.
 
-### Keenetic Cihazına Kurulum (Planlanan)
+### Keenetic Cihazına Kurulum
 
-**DİKKAT:** Bu proje henüz geliştirme aşamasındadır ve Keenetic cihazlarına doğrudan kuruluma hazır değildir. Aşağıdaki adımlar, projenin gelecekteki bir sürümü için hedeflenen kurulum sürecini özetlemektedir.
+**Ön Gereksinimler:**
+*   Keenetic router'ınıza shell erişiminiz (örneğin, SSH ile) olmalıdır.
+*   Router'ınızda `v2ray-core` binary'sinin kurulu ve sistem `PATH`'inde erişilebilir olması gerekmektedir. Bu uygulama, `v2ray-core` için bir *kontrolcüdür*; onu içermez.
 
-1.  **Paketin İndirilmesi**: Projenin `Releases` sayfasından Keenetic cihazınızın mimarisine (ARM/MIPS) uygun `.opkg` veya `.tar.gz` paketini indirin.
-2.  **Cihaza Yükleme**: İndirilen paketi `scp` veya Keenetic web arayüzündeki dosya yöneticisi aracılığıyla cihazın `/tmp` veya `/opt` dizinine yükleyin.
-3.  **SSH ile Kurulum**: SSH üzerinden Keenetic cihazınıza bağlanın ve aşağıdaki komutları çalıştırın:
+**Adımlar:**
+1.  **Paketi Oluşturma**: Geliştirme makinenizden derleme betiğini çalıştırarak router'ınızın mimarisine (örneğin, `arm` veya `mips`) uygun paketi oluşturun:
     ```bash
-    # Örnek olarak opkg paketi için:
-    opkg install /tmp/v2ray-keenetic-*.opkg
+    ./scripts/build.sh arm
     ```
-4.  **Web Arayüzünden Yapılandırma**: Kurulum tamamlandıktan sonra, Keenetic web arayüzünde (genellikle `192.168.1.1`) "Uygulamalar" veya benzeri bir menü altında V2Ray Kontrol Paneli'ni bulabilirsiniz. Buradan V2Ray sunucu ayarlarınızı yapabilirsiniz.
+    Bu komut, `dist/v2ray-keenetic_linux_arm.tar.gz` adında bir dosya oluşturacaktır.
+
+2.  **Router'a Yükleme**: Oluşturulan `.tar.gz` arşivini router'ınızın geçici bir dizinine (örneğin, `/tmp`) kopyalayın. Bunun için `scp` kullanabilirsiniz:
+    ```bash
+    scp dist/v2ray-keenetic_linux_arm.tar.gz root@192.168.1.1:/tmp/
+    ```
+
+3.  **Router'da Kurulum**: SSH üzerinden router'ınıza bağlanın ve aşağıdaki adımları izleyin:
+    *   Kalıcı bir dizine gidin. Kullanıcı veri bölümü (`/opt` yaygındır) iyi bir seçimdir.
+        ```bash
+        mkdir -p /opt/v2ray-keenetic
+        cd /opt/v2ray-keenetic
+        ```
+    *   Arşivi çıkartın:
+        ```bash
+        tar -xzf /tmp/v2ray-keenetic_linux_arm.tar.gz -C .
+        ```
+    *   Binary'yi çalıştırılabilir yapın:
+        ```bash
+        chmod +x ./v2ray-keenetic
+        ```
+
+4.  **Uygulamayı Çalıştırma**: Artık uygulamayı çalıştırabilirsiniz:
+    ```bash
+    ./v2ray-keenetic
+    ```
+    Uygulama başlayacak ve web arayüzü `http://<router-ip-adresiniz>:8080` adresinde erişilebilir olacaktır.
 
 ### Proje Yapısı
 
