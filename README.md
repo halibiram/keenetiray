@@ -22,18 +22,13 @@ This project is a V2Ray proxy application designed specifically for Keenetic rou
 *   You need the `v2ray-core` binary installed on your router and available in the system's `PATH`. This application is a *controller* for `v2ray-core`; it does not include it.
 
 **Steps:**
-1.  **Build the Package**: Build the application for your router's architecture (e.g., `arm` or `mips`) by running the build script from your development machine:
+1.  **Download on Router**: Connect to your router via SSH. Find the package URL for your router's architecture from the project's [GitHub Releases](https://github.com/your-username/v2ray-keenetic/releases) page. Use `wget` to download it to the `/tmp` directory.
     ```bash
-    ./scripts/build.sh arm
-    ```
-    This will create a file named `dist/v2ray-keenetic_linux_arm.tar.gz`.
-
-2.  **Upload to Router**: Copy the generated `.tar.gz` archive to your router's temporary directory (e.g., `/tmp`). You can use `scp`:
-    ```bash
-    scp dist/v2ray-keenetic_linux_arm.tar.gz root@192.168.1.1:/tmp/
+    # Example for ARM architecture. Replace URL with the correct one from the releases page.
+    wget https://github.com/your-username/v2ray-keenetic/releases/download/v1.0.0/v2ray-keenetic_linux_arm.tar.gz -O /tmp/v2ray-keenetic.tar.gz
     ```
 
-3.  **Install on Router**: Connect to your router via SSH and perform the following steps:
+2.  **Install on Router**: Perform the following steps:
     *   Navigate to a persistent directory. The user data partition is a good choice (`/opt` is common).
         ```bash
         mkdir -p /opt/v2ray-keenetic
@@ -117,7 +112,7 @@ Bu proje, Keenetic router'lar için özel olarak tasarlanmış bir V2Ray proxy u
     scp dist/v2ray-keenetic_linux_arm.tar.gz root@192.168.1.1:/tmp/
     ```
 
-3.  **Router'da Kurulum**: SSH üzerinden router'ınıza bağlanın ve aşağıdaki adımları izleyin:
+2.  **Router'da Kurulum**: Aşağıdaki adımları izleyin:
     *   Kalıcı bir dizine gidin. Kullanıcı veri bölümü (`/opt` yaygındır) iyi bir seçimdir.
         ```bash
         mkdir -p /opt/v2ray-keenetic
@@ -125,7 +120,7 @@ Bu proje, Keenetic router'lar için özel olarak tasarlanmış bir V2Ray proxy u
         ```
     *   Arşivi çıkartın:
         ```bash
-        tar -xzf /tmp/v2ray-keenetic_linux_arm.tar.gz -C .
+        tar -xzf /tmp/v2ray-keenetic.tar.gz -C .
         ```
     *   Binary'yi çalıştırılabilir yapın:
         ```bash
