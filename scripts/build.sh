@@ -45,11 +45,13 @@ cp -r web/dist $DIST_DIR/web
 
 # 4. Create final .tar.gz archive
 echo ">>> Creating distributable archive..."
+RELEASE_DIR="releases"
+mkdir -p $RELEASE_DIR
 (
   cd $DIST_DIR && \
-  tar -czf ../../$ARCHIVE_NAME .
+  tar -czf ../../$RELEASE_DIR/$ARCHIVE_NAME .
 )
-echo ">>> Archive created at dist/$ARCHIVE_NAME"
+echo ">>> Archive created at $RELEASE_DIR/$ARCHIVE_NAME"
 
 echo "--- Build and packaging process complete. ---"
-echo "Final archive is available at dist/$ARCHIVE_NAME"
+echo "Final archive is available at $RELEASE_DIR/$ARCHIVE_NAME"

@@ -49,8 +49,9 @@ func main() {
 		}
 	}
 
-	// Serve frontend static files
-	r.Static("/ui", "./web/dist")
+	// Serve frontend static files. The executable will look for a 'web' directory
+	// in the same directory it is run from.
+	r.Static("/ui", "./web")
 	// Redirect root to the UI
 	r.GET("/", func(c *gin.Context) {
 		c.Redirect(http.StatusMovedPermanently, "/ui")
