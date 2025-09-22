@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"v2ray-keenetic/internal/model"
-	"v2ray-keenetic/internal/service"
-	"v2ray-keenetic/internal/store"
+	"github.com/halibiram/keenetiray/internal/model"
+	"github.com/halibiram/keenetiray/internal/service"
+	"github.com/halibiram/keenetiray/internal/store"
 
 	"github.com/gin-gonic/gin"
 )

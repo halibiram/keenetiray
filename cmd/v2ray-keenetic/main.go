@@ -3,11 +3,17 @@ package main
 import (
 	"log"
 	"net/http"
-	"v2ray-keenetic/internal/handler"
-	"v2ray-keenetic/internal/service"
-	"v2ray-keenetic/internal/store"
+	"github.com/halibiram/keenetiray/internal/handler"
+	"github.com/halibiram/keenetiray/internal/service"
+	"github.com/halibiram/keenetiray/internal/store"
 
 	"github.com/gin-gonic/gin"
+	_ "github.com/gin-contrib/cors"
+	_ "github.com/gorilla/websocket"
+	_ "gopkg.in/yaml.v3"
+	_ "github.com/fsnotify/fsnotify"
+	_ "github.com/shirou/gopsutil/v3"
+	_ "github.com/go-playground/validator/v10"
 )
 
 func main() {

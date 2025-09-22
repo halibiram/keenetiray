@@ -3,7 +3,7 @@ package store
 import (
 	"database/sql"
 	"strconv"
-	"v2ray-keenetic/internal/model"
+	"github.com/halibiram/keenetiray/internal/model"
 
 	_ "github.com/mattn/go-sqlite3"
 )
